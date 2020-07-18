@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Data Analytics" />
+
+
+<title>Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Tidy Tuesday Code Along</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Analysis</h1>
+<h4 class="author">Data Analytics</h4>
+<h4 class="date">18/07/2020</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-07-18
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>20200707_coffee/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200718code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200718)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200718code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200718)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+</p>
+</div>
+<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div class="panel-body">
+The following chunks had caches available:
+<ul>
+<li>
+session-info-chunk-inserted-by-workflowr
+</li>
+<li>
+unnamed-chunk-1
+</li>
+<li>
+unnamed-chunk-2
+</li>
+<li>
+unnamed-chunk-3
+</li>
+<li>
+unnamed-chunk-4
+</li>
+<li>
+unnamed-chunk-5
+</li>
+</ul>
+<p>To ensure reproducibility of the results, delete the cache directory <code>analysis_cache</code> and re-run the analysis. To have workflowr automatically delete the cache directory prior to building the file, set <code>delete_cache = TRUE</code> when running <code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongbd92127"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> bd92127 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongbd92127" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version bd92127. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/analysis_cache/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/analysis.Rmd</code>) and HTML (<code>docs/analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+bd92127
+</td>
+<td>
+sciencificity
+</td>
+<td>
+2020-07-18
+</td>
+<td>
+Add start of code along analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="coffee-ratings" class="section level3">
+<h3>Coffee Ratings</h3>
+<pre class="r"><code>coffee &lt;- read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv&#39;) %&gt;% 
+  filter(total_cup_points &gt; 0)</code></pre>
+<pre class="r"><code>coffee %T&gt;% 
+  View() %&gt;% 
+  count(species, sort = TRUE)</code></pre>
+<pre><code># A tibble: 2 x 2
+  species     n
+  &lt;chr&gt;   &lt;int&gt;
+1 Arabica  1310
+2 Robusta    28</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  count(species, variety, sort = TRUE)</code></pre>
+<pre><code># A tibble: 33 x 3
+   species variety            n
+   &lt;chr&gt;   &lt;chr&gt;          &lt;int&gt;
+ 1 Arabica Caturra          255
+ 2 Arabica Bourbon          226
+ 3 Arabica Typica           211
+ 4 Arabica &lt;NA&gt;             201
+ 5 Arabica Other            108
+ 6 Arabica Catuai            74
+ 7 Arabica Hawaiian Kona     44
+ 8 Arabica Yellow Bourbon    35
+ 9 Arabica Mundo Novo        33
+10 Robusta &lt;NA&gt;              25
+# ... with 23 more rows</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  filter(!is.na(variety)) %&gt;% 
+  count(variety, sort = TRUE) %&gt;% 
+  head(12)</code></pre>
+<pre><code># A tibble: 12 x 2
+   variety            n
+   &lt;chr&gt;          &lt;int&gt;
+ 1 Caturra          255
+ 2 Bourbon          226
+ 3 Typica           211
+ 4 Other            110
+ 5 Catuai            74
+ 6 Hawaiian Kona     44
+ 7 Yellow Bourbon    35
+ 8 Mundo Novo        33
+ 9 Catimor           20
+10 SL14              17
+11 SL28              15
+12 Pacas             13</code></pre>
+<pre class="r"><code># To avoid the head() call use fct_lump(colA, #num_you_want)
+coffee %&gt;% 
+  filter(!is.na(variety)) %&gt;% 
+  count(variety = fct_lump(variety, 12), 
+        sort = TRUE) </code></pre>
+<pre><code># A tibble: 12 x 2
+   variety            n
+   &lt;fct&gt;          &lt;int&gt;
+ 1 Caturra          255
+ 2 Bourbon          226
+ 3 Typica           211
+ 4 Other            169
+ 5 Catuai            74
+ 6 Hawaiian Kona     44
+ 7 Yellow Bourbon    35
+ 8 Mundo Novo        33
+ 9 Catimor           20
+10 SL14              17
+11 SL28              15
+12 Pacas             13</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  filter(!is.na(variety)) %&gt;% 
+  count(species, variety, sort = TRUE) %&gt;% 
+  head(13)</code></pre>
+<pre><code># A tibble: 13 x 3
+   species variety            n
+   &lt;chr&gt;   &lt;chr&gt;          &lt;int&gt;
+ 1 Arabica Caturra          255
+ 2 Arabica Bourbon          226
+ 3 Arabica Typica           211
+ 4 Arabica Other            108
+ 5 Arabica Catuai            74
+ 6 Arabica Hawaiian Kona     44
+ 7 Arabica Yellow Bourbon    35
+ 8 Arabica Mundo Novo        33
+ 9 Arabica Catimor           20
+10 Arabica SL14              17
+11 Arabica SL28              15
+12 Arabica Pacas             13
+13 Arabica Gesha             12</code></pre>
+<pre class="r"><code># Has some unintended consequences if we have 2 things in count
+# so best use one count if combining with fct_lump()
+coffee %&gt;% 
+  filter(!is.na(variety)) %&gt;% 
+  count(species, 
+        variety = fct_lump(variety, 12), sort = TRUE)</code></pre>
+<pre><code># A tibble: 13 x 3
+   species variety            n
+   &lt;chr&gt;   &lt;fct&gt;          &lt;int&gt;
+ 1 Arabica Caturra          255
+ 2 Arabica Bourbon          226
+ 3 Arabica Typica           211
+ 4 Arabica Other            166
+ 5 Arabica Catuai            74
+ 6 Arabica Hawaiian Kona     44
+ 7 Arabica Yellow Bourbon    35
+ 8 Arabica Mundo Novo        33
+ 9 Arabica Catimor           20
+10 Arabica SL14              17
+11 Arabica SL28              15
+12 Arabica Pacas             13
+13 Robusta Other              3</code></pre>
+<pre class="r"><code># How does variety effect the score? The total cup points?
+coffee %&gt;% 
+  filter(!is.na(variety)) %&gt;% 
+  mutate(variety = fct_lump(variety, 12),
+         variety = fct_reorder(variety, total_cup_points)) %&gt;% 
+  ggplot(aes(total_cup_points, variety)) +
+  geom_boxplot()</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee_lumped &lt;- coffee %&gt;% 
+  filter(!is.na(variety),
+         total_cup_points &gt; 0) %&gt;% 
+  mutate(variety = fct_lump(variety, 12))
+
+# Let&#39;s remove that 0 point
+coffee_lumped %&gt;% 
+  mutate(variety = fct_reorder(variety, total_cup_points)) %&gt;% 
+  ggplot(aes(total_cup_points, variety)) +
+  geom_boxplot()</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-2-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee_lumped %&gt;% 
+  ggplot(aes(total_cup_points, fill=variety)) +
+  geom_histogram(binwidth=2) +
+  facet_wrap(~ variety, scale=&quot;free_y&quot;) +
+  scale_fill_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-2-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee %&gt;% 
+  # Let&#39;s see % values are missing from data
+  # Gives you a % complete basically 1.00 means 100% of obs present
+  summarise(across(everything(), ~mean(!is.na(.)))) %&gt;% 
+  # Let&#39;s us see it as a column
+  gather() %&gt;% 
+  # sort from complete data to less complete data
+  arrange(desc(value)) %T&gt;% 
+  View()</code></pre>
+<pre><code># A tibble: 43 x 2
+   key                value
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 total_cup_points       1
+ 2 species                1
+ 3 number_of_bags         1
+ 4 bag_weight             1
+ 5 in_country_partner     1
+ 6 grading_date           1
+ 7 aroma                  1
+ 8 flavor                 1
+ 9 aftertaste             1
+10 acidity                1
+# ... with 33 more rows</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  count(producer, sort = TRUE) # Lots of missing producers</code></pre>
+<pre><code># A tibble: 692 x 2
+   producer                         n
+   &lt;chr&gt;                        &lt;int&gt;
+ 1 &lt;NA&gt;                           231
+ 2 La Plata                        30
+ 3 Ipanema Agrícola SA             22
+ 4 Doi Tung Development Project    17
+ 5 Ipanema Agricola                12
+ 6 VARIOS                          12
+ 7 Ipanema Agricola S.A            11
+ 8 ROBERTO MONTERROSO              10
+ 9 AMILCAR LAPOLA                   9
+10 LA PLATA                         9
+# ... with 682 more rows</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  count(company, sort = TRUE) # Lots missing here</code></pre>
+<pre><code># A tibble: 282 x 2
+   company                              n
+   &lt;chr&gt;                            &lt;int&gt;
+ 1 &lt;NA&gt;                               209
+ 2 unex guatemala, s.a.                86
+ 3 ipanema coffees                     50
+ 4 exportadora de cafe condor s.a      40
+ 5 kona pacific farmers cooperative    40
+ 6 racafe &amp; cia s.c.a                  40
+ 7 blossom valley&lt;U+5BB8&gt;&lt;U+5DA7&gt;&lt;U+570B&gt;&lt;U+969B&gt;              25
+ 8 carcafe ltda                        25
+ 9 nucoffee                            24
+10 taiwan coffee laboratory            20
+# ... with 272 more rows</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  count(color, sort = TRUE)</code></pre>
+<pre><code># A tibble: 5 x 2
+  color            n
+  &lt;chr&gt;        &lt;int&gt;
+1 Green          869
+2 &lt;NA&gt;           218
+3 Bluish-Green   114
+4 Blue-Green      85
+5 None            52</code></pre>
+<pre class="r"><code>coffee %&gt;% 
+  count(country = fct_lump(country_of_origin, 12), sort=TRUE) %&gt;% 
+  filter(!is.na(country)) %&gt;% 
+  mutate(country = fct_reorder(country, n)) %&gt;% 
+  ggplot(aes(n, country)) +
+  geom_col()</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee %&gt;% 
+  filter(!is.na(country_of_origin),
+         (total_cup_points &gt; 0)) %&gt;% 
+  mutate(country = fct_lump(country_of_origin, 12),
+         country = fct_reorder(country, total_cup_points)) %&gt;% 
+  ggplot(aes(total_cup_points, country)) +
+  geom_boxplot() </code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="interesting-dimensions" class="section level4">
+<h4>Interesting dimensions</h4>
+<pre class="r"><code># Do the individual aroma, sweetness etc. add up to the
+# total_cup_points
+coffee_metrics &lt;- coffee %&gt;% 
+  filter(total_cup_points &gt; 0) %&gt;% 
+  mutate(coffee_id = row_number()) %&gt;% 
+  select(coffee_id, total_cup_points, variety,
+         company, country_of_origin, 
+         aroma:moisture) %&gt;%
+  # pivot the cols aroma:moisture
+  # make the new col name = &quot;metric&quot;
+  # the value goes in &quot;Value&quot; aroma 8.67, flavor = 8.83 etc.
+  # we see that moisture does not seem to be in the total, 
+  # so sum to cupper_points
+  pivot_longer(aroma:cupper_points,
+               names_to = &quot;metric&quot;,
+               values_to = &quot;value&quot;) # %&gt;% 
+  # group by the id, and the total_cup_points to check assumption
+  # that adding aroma:cupper_points scores gives the total_cup_points
+  # group_by(coffee_id, total_cup_points) %&gt;% 
+  # summarise(total = sum(value))  %&gt;% 
+  # # these line up well
+  # ggplot(aes(total_cup_points, total)) +
+  # geom_point()</code></pre>
+<pre class="r"><code>library(ggridges)
+coffee_metrics %&gt;% 
+  mutate(metric = fct_reorder(metric, value)) %&gt;% 
+  ggplot(aes(value, metric)) +
+  geom_density_ridges()</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee_metrics %&gt;% 
+  group_by(metric) %&gt;% 
+  summarise(avg = mean(value),
+            sd = sd(value)) %&gt;% 
+  arrange(desc(avg))</code></pre>
+<pre><code># A tibble: 10 x 3
+   metric          avg    sd
+   &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;
+ 1 sweetness      9.86 0.554
+ 2 clean_cup      9.84 0.715
+ 3 uniformity     9.84 0.485
+ 4 aroma          7.57 0.316
+ 5 acidity        7.54 0.319
+ 6 flavor         7.53 0.341
+ 7 balance        7.52 0.354
+ 8 body           7.52 0.308
+ 9 cupper_points  7.51 0.427
+10 aftertaste     7.41 0.350</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.3 (2020-02-29)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_South Africa.1252  LC_CTYPE=English_South Africa.1252   
+[3] LC_MONETARY=English_South Africa.1252 LC_NUMERIC=C                         
+[5] LC_TIME=English_South Africa.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggridges_0.5.2             glue_1.4.1                
+ [3] tidyquant_1.0.0            quantmod_0.4.17           
+ [5] TTR_0.23-6                 PerformanceAnalytics_2.0.4
+ [7] xts_0.12-0                 zoo_1.8-7                 
+ [9] lubridate_1.7.8            magrittr_1.5              
+[11] forcats_0.5.0              stringr_1.4.0             
+[13] dplyr_1.0.0                purrr_0.3.4               
+[15] readr_1.3.1                tidyr_1.1.0               
+[17] tibble_3.0.1               ggplot2_3.3.0             
+[19] tidyverse_1.3.0            workflowr_1.6.2           
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.4.6     lattice_0.20-38  utf8_1.1.4       assertthat_0.2.1
+ [5] rprojroot_1.3-2  digest_0.6.25    plyr_1.8.6       R6_2.4.1        
+ [9] cellranger_1.1.0 backports_1.1.6  reprex_0.3.0     evaluate_0.14   
+[13] httr_1.4.1       pillar_1.4.4     rlang_0.4.6      curl_4.3        
+[17] readxl_1.3.1     rstudioapi_0.11  rmarkdown_2.1    labeling_0.3    
+[21] munsell_0.5.0    broom_0.5.6      compiler_3.6.3   httpuv_1.5.2    
+[25] modelr_0.1.6     xfun_0.13        pkgconfig_2.0.3  htmltools_0.4.0 
+[29] tidyselect_1.1.0 codetools_0.2-16 quadprog_1.5-8   fansi_0.4.1     
+[33] crayon_1.3.4     dbplyr_1.4.3     withr_2.2.0      later_1.0.0     
+[37] Quandl_2.10.0    grid_3.6.3       nlme_3.1-144     jsonlite_1.6.1  
+[41] gtable_0.3.0     lifecycle_0.2.0  DBI_1.1.0        git2r_0.26.1    
+[45] scales_1.1.0     cli_2.0.2        stringi_1.4.6    farver_2.0.3    
+[49] fs_1.4.1         promises_1.1.0   xml2_1.3.2       ellipsis_0.3.1  
+[53] generics_0.0.2   vctrs_0.3.1      tools_3.6.3      hms_0.5.3       
+[57] yaml_2.2.1       colorspace_1.4-1 rvest_0.3.5      knitr_1.28      
+[61] haven_2.2.0     </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
