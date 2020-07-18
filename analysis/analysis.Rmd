@@ -1,0 +1,164 @@
+---
+title: "Analysis"
+author: "Data Analytics"
+date: "18/07/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(autodep = TRUE, echo = TRUE, 
+                      cache = TRUE, warning = FALSE,
+                      message = FALSE)
+library(tidyverse)
+library(magrittr)
+library(tidyquant)
+library(lubridate)
+library(glue)
+theme_set(theme_tq())
+```
+
+### Coffee Ratings
+
+```{r}
+coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv') %>% 
+  filter(total_cup_points > 0)
+
+```
+```{r}
+coffee %T>% 
+  View() %>% 
+  count(species, sort = TRUE)
+
+coffee %>% 
+  count(species, variety, sort = TRUE)
+
+coffee %>% 
+  filter(!is.na(variety)) %>% 
+  count(variety, sort = TRUE) %>% 
+  head(12)
+
+# To avoid the head() call use fct_lump(colA, #num_you_want)
+coffee %>% 
+  filter(!is.na(variety)) %>% 
+  count(variety = fct_lump(variety, 12), 
+        sort = TRUE) 
+
+coffee %>% 
+  filter(!is.na(variety)) %>% 
+  count(species, variety, sort = TRUE) %>% 
+  head(13)
+
+# Has some unintended consequences if we have 2 things in count
+# so best use one count if combining with fct_lump()
+coffee %>% 
+  filter(!is.na(variety)) %>% 
+  count(species, 
+        variety = fct_lump(variety, 12), sort = TRUE)
+  
+# How does variety effect the score? The total cup points?
+coffee %>% 
+  filter(!is.na(variety)) %>% 
+  mutate(variety = fct_lump(variety, 12),
+         variety = fct_reorder(variety, total_cup_points)) %>% 
+  ggplot(aes(total_cup_points, variety)) +
+  geom_boxplot()
+
+coffee_lumped <- coffee %>% 
+  filter(!is.na(variety),
+         total_cup_points > 0) %>% 
+  mutate(variety = fct_lump(variety, 12))
+
+# Let's remove that 0 point
+coffee_lumped %>% 
+  mutate(variety = fct_reorder(variety, total_cup_points)) %>% 
+  ggplot(aes(total_cup_points, variety)) +
+  geom_boxplot()
+
+coffee_lumped %>% 
+  ggplot(aes(total_cup_points, fill=variety)) +
+  geom_histogram(binwidth=2) +
+  facet_wrap(~ variety, scale="free_y") +
+  scale_fill_tq() +
+  theme(legend.position = "none")
+```
+
+```{r}
+coffee %>% 
+  # Let's see % values are missing from data
+  # Gives you a % complete basically 1.00 means 100% of obs present
+  summarise(across(everything(), ~mean(!is.na(.)))) %>% 
+  # Let's us see it as a column
+  gather() %>% 
+  # sort from complete data to less complete data
+  arrange(desc(value)) %T>% 
+  View()
+
+coffee %>% 
+  count(producer, sort = TRUE) # Lots of missing producers
+
+coffee %>% 
+  count(company, sort = TRUE) # Lots missing here
+
+coffee %>% 
+  count(color, sort = TRUE)
+
+coffee %>% 
+  count(country = fct_lump(country_of_origin, 12), sort=TRUE) %>% 
+  filter(!is.na(country)) %>% 
+  mutate(country = fct_reorder(country, n)) %>% 
+  ggplot(aes(n, country)) +
+  geom_col()
+
+coffee %>% 
+  filter(!is.na(country_of_origin),
+         (total_cup_points > 0)) %>% 
+  mutate(country = fct_lump(country_of_origin, 12),
+         country = fct_reorder(country, total_cup_points)) %>% 
+  ggplot(aes(total_cup_points, country)) +
+  geom_boxplot() 
+```
+
+#### Interesting dimensions
+
+```{r}
+# Do the individual aroma, sweetness etc. add up to the
+# total_cup_points
+coffee_metrics <- coffee %>% 
+  filter(total_cup_points > 0) %>% 
+  mutate(coffee_id = row_number()) %>% 
+  select(coffee_id, total_cup_points, variety,
+         company, country_of_origin, 
+         aroma:moisture) %>%
+  # pivot the cols aroma:moisture
+  # make the new col name = "metric"
+  # the value goes in "Value" aroma 8.67, flavor = 8.83 etc.
+  # we see that moisture does not seem to be in the total, 
+  # so sum to cupper_points
+  pivot_longer(aroma:cupper_points,
+               names_to = "metric",
+               values_to = "value") # %>% 
+  # group by the id, and the total_cup_points to check assumption
+  # that adding aroma:cupper_points scores gives the total_cup_points
+  # group_by(coffee_id, total_cup_points) %>% 
+  # summarise(total = sum(value))  %>% 
+  # # these line up well
+  # ggplot(aes(total_cup_points, total)) +
+  # geom_point()
+
+```
+
+```{r}
+library(ggridges)
+coffee_metrics %>% 
+  mutate(metric = fct_reorder(metric, value)) %>% 
+  ggplot(aes(value, metric)) +
+  geom_density_ridges()
+
+coffee_metrics %>% 
+  group_by(metric) %>% 
+  summarise(avg = mean(value),
+            sd = sd(value)) %>% 
+  arrange(desc(avg))
+```
+
+
