@@ -404,7 +404,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-07-18
+<strong>Last updated:</strong> 2020-07-19
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -423,12 +423,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -471,33 +471,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div id="strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
-The following chunks had caches available:
-<ul>
-<li>
-session-info-chunk-inserted-by-workflowr
-</li>
-<li>
-unnamed-chunk-1
-</li>
-<li>
-unnamed-chunk-2
-</li>
-<li>
-unnamed-chunk-3
-</li>
-<li>
-unnamed-chunk-4
-</li>
-<li>
-unnamed-chunk-5
-</li>
-</ul>
-<p>To ensure reproducibility of the results, delete the cache directory <code>analysis_cache</code> and re-run the analysis. To have workflowr automatically delete the cache directory prior to building the file, set <code>delete_cache = TRUE</code> when running <code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
 </div>
 </div>
 </div>
@@ -516,16 +495,16 @@ unnamed-chunk-5
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongbd92127"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> bd92127 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsciencificitycodealongcoffeetttreebe397a8ebc2e31bc45e1c14d7c5e133da484738etargetblankbe397a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/sciencificity/code_along_coffee_tt/tree/be397a8ebc2e31bc45e1c14d7c5e133da484738e" target="_blank">be397a8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongbd92127" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsciencificitycodealongcoffeetttreebe397a8ebc2e31bc45e1c14d7c5e133da484738etargetblankbe397a8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version bd92127. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/sciencificity/code_along_coffee_tt/tree/be397a8ebc2e31bc45e1c14d7c5e133da484738e" target="_blank">be397a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -533,7 +512,9 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-    Ignored:    analysis/analysis_cache/
+
+Unstaged changes:
+    Modified:   analysis/analysis.Rmd
 
 </code></pre>
 <p>
@@ -574,10 +555,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sciencificity/code_along_coffee_tt/be397a8ebc2e31bc45e1c14d7c5e133da484738e/docs/analysis.html" target="_blank">be397a8</a>
+</td>
+<td>
+sciencificity
+</td>
+<td>
+2020-07-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-bd92127
+<a href="https://github.com/sciencificity/code_along_coffee_tt/blob/bd9212762d81b2887b7058d21d3666eb8c02c13e/analysis/analysis.Rmd" target="_blank">bd92127</a>
 </td>
 <td>
 sciencificity
@@ -860,6 +858,195 @@ coffee_metrics %&gt;%
  8 body           7.52 0.308
  9 cupper_points  7.51 0.427
 10 aftertaste     7.41 0.350</code></pre>
+<p>Are any metrics correlated?</p>
+<pre class="r"><code>library(widyr)
+correlations &lt;- coffee_metrics %&gt;% 
+  # correlations among metrics, based on coffee_id, by value
+  pairwise_cor(metric, coffee_id, value, sort = TRUE)</code></pre>
+<p>Sweetness and flavour are not correlated at all.</p>
+<p>Let’s do a network graph, can we find clusters in the metrics.</p>
+<pre class="r"><code>library(ggraph)
+library(igraph)
+
+correlations %&gt;% 
+  head(50) %&gt;% 
+  graph_from_data_frame() %&gt;% 
+  ggraph() +
+  geom_edge_link(aes(edge_alpha = correlation)) +
+  geom_node_point() +
+  geom_node_text(aes(label = name), repel = TRUE)</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We see that there is one cluster with <code>aroma</code>, <code>cupper_points</code>, <code>flavor</code> etc. as one dense/tight cluster, and then further along we have the <code>sweetness</code>, <code>clean_cup</code> and <code>uniformity</code> as another cluster. These three came up in the ggridges plot, so it makes sense about these 2 clusters.</p>
+<p>The suspicion is that PCA will find similar clusters? Let’s check it out. <code>widely_svd</code> is very similar to finding correlations, the difference is it returns the metric by <code>dimension</code>. We get the first dimension, second dimension etc. (single value decomposition).</p>
+<pre class="r"><code>library(tidytext)
+coffee_metrics %&gt;% 
+  group_by(metric) %&gt;% 
+  mutate(centered = value - mean(value)) %&gt;% 
+  ungroup() %&gt;% 
+  # do single value decomp
+  widely_svd(metric, coffee_id, centered) %&gt;% 
+  # find the biggest variation in the data
+  filter(dimension &lt;= 4) %&gt;% 
+  mutate(# reorder the metrics - metric by value within dimensions
+         metric = reorder_within(metric, value, dimension)) %&gt;% 
+  ggplot(aes(value, metric)) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~ dimension, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee_metrics %&gt;% 
+  # let&#39;s remove the one cluster of sweetness, clean_cup and uniformity
+  filter(!metric %in% c(&quot;sweetness&quot;, &quot;clean_cup&quot;, &quot;uniformity&quot;)) %&gt;% 
+  group_by(metric) %&gt;% 
+  mutate(centered = value - mean(value)) %&gt;% 
+  ungroup() %&gt;% 
+  # do single value decomp
+  widely_svd(metric, coffee_id, centered) %&gt;% 
+  # find the biggest variation in the data
+  filter(dimension &lt;= 4) %&gt;% 
+  mutate(# reorder the metrics - metric by value within dimensions
+         metric = reorder_within(metric, value, dimension)) %&gt;% 
+  ggplot(aes(value, metric)) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~ dimension, scales = &quot;free_y&quot;)  </code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>From the above we can maybe break down the body vs cupper_points of dimension 2, the balance vs aroma of dimension 3, the aroma vs acidity of dimension 4.</p>
+<pre class="r"><code>coffee_metrics %&gt;% 
+  # let&#39;s remove the one cluster of sweetness, clean_cup and uniformity
+  filter(!metric %in% c(&quot;sweetness&quot;, &quot;clean_cup&quot;, &quot;uniformity&quot;)) %&gt;% 
+  # do single value decomp
+  widely_svd(metric, coffee_id, value) %&gt;% 
+  # find the biggest variation in the data
+  filter(between(dimension, 2, 5)) %&gt;% 
+  mutate(# reorder the metrics - metric by value within dimensions
+         metric = reorder_within(metric, value, dimension)) %&gt;% 
+  ggplot(aes(value, metric)) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~ dimension, scales = &quot;free_y&quot;)  </code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Which of these dimensions (after taste, aroma etc.) might associate with altitude, and which may not?</p>
+<pre class="r"><code># Do the individual aroma, sweetness etc. add up to the
+# total_cup_points
+coffee_metrics2 &lt;- coffee %&gt;% 
+  filter(total_cup_points &gt; 0) %&gt;% 
+  mutate(coffee_id = row_number()) %&gt;% 
+  select(coffee_id, total_cup_points, 
+         variety, altitude_mean_meters,
+         company, country_of_origin, 
+         aroma:moisture, altitude) %&gt;%
+  # pivot the cols aroma:moisture
+  # make the new col name = &quot;metric&quot;
+  # the value goes in &quot;Value&quot; aroma 8.67, flavor = 8.83 etc.
+  # we see that moisture does not seem to be in the total, 
+  # so sum to cupper_points
+  pivot_longer(aroma:cupper_points,
+               names_to = &quot;metric&quot;,
+               values_to = &quot;value&quot;) # %&gt;% 
+  # group by the id, and the total_cup_points to check assumption
+  # that adding aroma:cupper_points scores gives the total_cup_points
+  # group_by(coffee_id, total_cup_points) %&gt;% 
+  # summarise(total = sum(value))  %&gt;% 
+  # # these line up well
+  # ggplot(aes(total_cup_points, total)) +
+  # geom_point()</code></pre>
+<p>If we look at a histogram of the altitude we see some outliers. These may be parsing errors since coffee is not brewed 200000 meters above sea level. <a href="https://oceanservice.noaa.gov/facts/highestpoint.html#:~:text=Mount%20Everest&#39;s%20peak%20is%20the,on%20Earth%20from%20Earth&#39;s%20center.">Mt Everest</a> is 8,848 meters above mean sea level.</p>
+<pre class="r"><code>coffee_metrics2 %&gt;% 
+  ggplot(aes(altitude_mean_meters)) +
+  geom_histogram()</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Let’s filter those mean altitudes below 10000. We still see there are a few outliers (long tail), with the beginning looking more normal (around 1000 meters).</p>
+<pre class="r"><code>coffee_metrics2 %&gt;% 
+  filter(altitude_mean_meters &lt; 10000) %&gt;% 
+  ggplot(aes(altitude_mean_meters)) +
+  geom_histogram()</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee %&gt;% 
+  filter(altitude_mean_meters &gt;= 2000) %&gt;% 
+  select(altitude_mean_meters, altitude, country_of_origin) %T&gt;% 
+  View()</code></pre>
+<pre><code># A tibble: 36 x 3
+   altitude_mean_meters altitude                      country_of_origin
+                  &lt;dbl&gt; &lt;chr&gt;                         &lt;chr&gt;            
+ 1                 2075 1950-2200                     Ethiopia         
+ 2                 2075 1950-2200                     Ethiopia         
+ 3                 2000 1800-2200                     Ethiopia         
+ 4                 2075 1950-2200                     Ethiopia         
+ 5                 2080 meters above sea level: 2.080 United States    
+ 6                 2019 meters above sea level: 2.019 United States    
+ 7                 2112 meters above sea level: 2.112 United States    
+ 8                 2560 2.560 msnm                    Colombia         
+ 9                 2136 2136 msnm                     Colombia         
+10                 2000 2000                          Kenya            
+# ... with 26 more rows</code></pre>
+<p>We might be interested in the correlation between altitude and quality.</p>
+<pre class="r"><code># Let&#39;s look at original coffee ds
+coffee %&gt;% 
+  filter(altitude_mean_meters &lt; 10000) %&gt;% 
+  # Cheat and make anything higher than 3000 stop at 3000
+  mutate(altitude_mean_meters = 
+           pmin(altitude_mean_meters, 3000)) %&gt;% 
+  ggplot(aes(altitude_mean_meters, total_cup_points)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;)</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>There is a correlation, but it is a low <span class="math inline">\(R^2\)</span>, i.e. the amount of variation in the <code>total cup points</code> that is explained by altitude is low. However it does look like higher altitudes have slightly higher cup points. So now what is the amount of correlation within each of those sources (e.g. aroma, body etc.).</p>
+<pre class="r"><code>coffee_metrics2 %&gt;% 
+  filter(altitude_mean_meters &lt; 10000,
+         altitude != 1) %&gt;% 
+  mutate(altitude_mean_meters = pmin(altitude_mean_meters, 3000)) %&gt;% 
+  group_by(metric) %&gt;% 
+  summarise(correlation = cor(altitude_mean_meters, value)) %&gt;% 
+  arrange(desc(correlation))</code></pre>
+<pre><code># A tibble: 10 x 2
+   metric        correlation
+   &lt;chr&gt;               &lt;dbl&gt;
+ 1 acidity            0.201 
+ 2 balance            0.180 
+ 3 flavor             0.172 
+ 4 body               0.170 
+ 5 aroma              0.157 
+ 6 aftertaste         0.148 
+ 7 cupper_points      0.144 
+ 8 clean_cup          0.0633
+ 9 uniformity         0.0621
+10 sweetness          0.0101</code></pre>
+<p>We see <code>sweetness</code> is not correlated, <code>acidity</code> has some correlation with <code>altitude_mean_meters</code>.</p>
+<p>Let’s also build a model.</p>
+<pre class="r"><code>coffee_metrics2 %&gt;% 
+  filter(altitude_mean_meters &lt; 10000,
+         altitude != 1) %&gt;% 
+  mutate(altitude_mean_meters = pmin(altitude_mean_meters, 3000),
+         km = altitude_mean_meters/1000 # scale in the val by making it in km
+         ) %&gt;% 
+  group_by(metric) %&gt;% 
+  summarise(correlation = cor(altitude_mean_meters, value),
+            # summarise a model object by creating a list with a single lm
+            # value explained by altitude_mean_meters
+            model = list(lm(value ~ km))
+            ) %&gt;% 
+  # Now let&#39;s tidy that list column, for each model apply broom&#39;s tidy
+  # We also want the confidence interval so pass broom::tidy that you
+  # are looking for that
+  mutate(tidied = map(model, broom::tidy, conf.int = TRUE)) %&gt;% 
+  # Now we have a statistical model for each of these value, altitude combos
+  # Slope and intercept
+  unnest(tidied) %&gt;% 
+  # Let&#39;s keep only the slope variable and drop intercept
+  filter(term == &quot;km&quot;) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(metric = fct_reorder(metric, estimate)) %&gt;% 
+  ggplot(aes(estimate, metric,
+             colour = p.value &lt; .05)) +
+  geom_point() +
+  # Let&#39;s put some horizontal error bars showing the conf interval
+  geom_errorbarh(aes(xmin = conf.low,
+                     xmax = conf.high),
+                 height = .1) +
+  labs(x = &quot;Each km contributes this much to the score (95% confidence int)&quot;,
+       y = &quot;Evaluation of coffee&quot;)</code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -883,34 +1070,40 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggridges_0.5.2             glue_1.4.1                
- [3] tidyquant_1.0.0            quantmod_0.4.17           
- [5] TTR_0.23-6                 PerformanceAnalytics_2.0.4
- [7] xts_0.12-0                 zoo_1.8-7                 
- [9] lubridate_1.7.8            magrittr_1.5              
-[11] forcats_0.5.0              stringr_1.4.0             
-[13] dplyr_1.0.0                purrr_0.3.4               
-[15] readr_1.3.1                tidyr_1.1.0               
-[17] tibble_3.0.1               ggplot2_3.3.0             
-[19] tidyverse_1.3.0            workflowr_1.6.2           
+ [1] tidytext_0.2.4             igraph_1.2.5              
+ [3] ggraph_2.0.3               widyr_0.1.3               
+ [5] ggridges_0.5.2             glue_1.4.1                
+ [7] tidyquant_1.0.0            quantmod_0.4.17           
+ [9] TTR_0.23-6                 PerformanceAnalytics_2.0.4
+[11] xts_0.12-0                 zoo_1.8-7                 
+[13] lubridate_1.7.8            magrittr_1.5              
+[15] forcats_0.5.0              stringr_1.4.0             
+[17] dplyr_1.0.0                purrr_0.3.4               
+[19] readr_1.3.1                tidyr_1.1.0               
+[21] tibble_3.0.1               ggplot2_3.3.0             
+[23] tidyverse_1.3.0            workflowr_1.6.2           
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.4.6     lattice_0.20-38  utf8_1.1.4       assertthat_0.2.1
- [5] rprojroot_1.3-2  digest_0.6.25    plyr_1.8.6       R6_2.4.1        
- [9] cellranger_1.1.0 backports_1.1.6  reprex_0.3.0     evaluate_0.14   
-[13] httr_1.4.1       pillar_1.4.4     rlang_0.4.6      curl_4.3        
-[17] readxl_1.3.1     rstudioapi_0.11  rmarkdown_2.1    labeling_0.3    
-[21] munsell_0.5.0    broom_0.5.6      compiler_3.6.3   httpuv_1.5.2    
-[25] modelr_0.1.6     xfun_0.13        pkgconfig_2.0.3  htmltools_0.4.0 
-[29] tidyselect_1.1.0 codetools_0.2-16 quadprog_1.5-8   fansi_0.4.1     
-[33] crayon_1.3.4     dbplyr_1.4.3     withr_2.2.0      later_1.0.0     
-[37] Quandl_2.10.0    grid_3.6.3       nlme_3.1-144     jsonlite_1.6.1  
-[41] gtable_0.3.0     lifecycle_0.2.0  DBI_1.1.0        git2r_0.26.1    
-[45] scales_1.1.0     cli_2.0.2        stringi_1.4.6    farver_2.0.3    
-[49] fs_1.4.1         promises_1.1.0   xml2_1.3.2       ellipsis_0.3.1  
-[53] generics_0.0.2   vctrs_0.3.1      tools_3.6.3      hms_0.5.3       
-[57] yaml_2.2.1       colorspace_1.4-1 rvest_0.3.5      knitr_1.28      
-[61] haven_2.2.0     </code></pre>
+ [1] nlme_3.1-144       fs_1.4.1           httr_1.4.1         rprojroot_1.3-2   
+ [5] SnowballC_0.7.0    tools_3.6.3        backports_1.1.6    utf8_1.1.4        
+ [9] R6_2.4.1           mgcv_1.8-31        DBI_1.1.0          colorspace_1.4-1  
+[13] withr_2.2.0        gridExtra_2.3      tidyselect_1.1.0   curl_4.3          
+[17] compiler_3.6.3     git2r_0.26.1       cli_2.0.2          rvest_0.3.5       
+[21] xml2_1.3.2         labeling_0.3       scales_1.1.0       quadprog_1.5-8    
+[25] digest_0.6.25      rmarkdown_2.1      pkgconfig_2.0.3    htmltools_0.4.0   
+[29] dbplyr_1.4.3       rlang_0.4.6        readxl_1.3.1       rstudioapi_0.11   
+[33] farver_2.0.3       generics_0.0.2     jsonlite_1.6.1     tokenizers_0.2.1  
+[37] Matrix_1.2-18      Rcpp_1.0.4.6       Quandl_2.10.0      munsell_0.5.0     
+[41] fansi_0.4.1        viridis_0.5.1      lifecycle_0.2.0    stringi_1.4.6     
+[45] whisker_0.4        yaml_2.2.1         MASS_7.3-51.6      plyr_1.8.6        
+[49] grid_3.6.3         ggrepel_0.8.2      promises_1.1.0     crayon_1.3.4      
+[53] lattice_0.20-38    splines_3.6.3      graphlayouts_0.7.0 haven_2.2.0       
+[57] hms_0.5.3          knitr_1.28         pillar_1.4.4       reshape2_1.4.4    
+[61] codetools_0.2-16   reprex_0.3.0       evaluate_0.14      modelr_0.1.6      
+[65] tweenr_1.0.1       vctrs_0.3.1        httpuv_1.5.2       cellranger_1.1.0  
+[69] polyclip_1.10-0    gtable_0.3.0       assertthat_0.2.1   ggforce_0.3.1     
+[73] xfun_0.13          broom_0.5.6        tidygraph_1.2.0    janeaustenr_0.1.5 
+[77] later_1.0.0        viridisLite_0.3.0  ellipsis_0.3.1    </code></pre>
 </div>
 </div>
 </div>

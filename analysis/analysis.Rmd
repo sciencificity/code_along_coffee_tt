@@ -161,4 +161,211 @@ coffee_metrics %>%
   arrange(desc(avg))
 ```
 
+Are any metrics correlated?
+
+```{r}
+library(widyr)
+correlations <- coffee_metrics %>% 
+  # correlations among metrics, based on coffee_id, by value
+  pairwise_cor(metric, coffee_id, value, sort = TRUE)
+```
+Sweetness and flavour are not correlated at all.
+
+Let's do a network graph, can we find clusters in the metrics.
+
+```{r}
+library(ggraph)
+library(igraph)
+
+correlations %>% 
+  head(50) %>% 
+  graph_from_data_frame() %>% 
+  ggraph() +
+  geom_edge_link(aes(edge_alpha = correlation)) +
+  geom_node_point() +
+  geom_node_text(aes(label = name), repel = TRUE)
+```
+
+We see that there is one cluster with `aroma`, `cupper_points`, `flavor` etc. as one dense/tight cluster, and then further along we have the `sweetness`, `clean_cup` and `uniformity` as another cluster. These three came up in the ggridges plot, so it makes sense about these 2 clusters.
+
+The suspicion is that PCA will find similar clusters? Let's check it out.
+`widely_svd` is very similar to finding correlations, the difference is it returns the metric by `dimension`. We get the first dimension, second dimension etc. (single value decomposition). 
+
+```{r}
+library(tidytext)
+coffee_metrics %>% 
+  group_by(metric) %>% 
+  mutate(centered = value - mean(value)) %>% 
+  ungroup() %>% 
+  # do single value decomp
+  widely_svd(metric, coffee_id, centered) %>% 
+  # find the biggest variation in the data
+  filter(dimension <= 4) %>% 
+  mutate(# reorder the metrics - metric by value within dimensions
+         metric = reorder_within(metric, value, dimension)) %>% 
+  ggplot(aes(value, metric)) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~ dimension, scales = "free_y")
+
+
+coffee_metrics %>% 
+  # let's remove the one cluster of sweetness, clean_cup and uniformity
+  filter(!metric %in% c("sweetness", "clean_cup", "uniformity")) %>% 
+  group_by(metric) %>% 
+  mutate(centered = value - mean(value)) %>% 
+  ungroup() %>% 
+  # do single value decomp
+  widely_svd(metric, coffee_id, centered) %>% 
+  # find the biggest variation in the data
+  filter(dimension <= 4) %>% 
+  mutate(# reorder the metrics - metric by value within dimensions
+         metric = reorder_within(metric, value, dimension)) %>% 
+  ggplot(aes(value, metric)) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~ dimension, scales = "free_y")  
+```
+
+From the above we can maybe break down the body vs cupper_points of dimension 2, the balance vs aroma of dimension 3, the aroma vs acidity of dimension 4. 
+
+```{r}
+coffee_metrics %>% 
+  # let's remove the one cluster of sweetness, clean_cup and uniformity
+  filter(!metric %in% c("sweetness", "clean_cup", "uniformity")) %>% 
+  # do single value decomp
+  widely_svd(metric, coffee_id, value) %>% 
+  # find the biggest variation in the data
+  filter(between(dimension, 2, 5)) %>% 
+  mutate(# reorder the metrics - metric by value within dimensions
+         metric = reorder_within(metric, value, dimension)) %>% 
+  ggplot(aes(value, metric)) +
+  geom_col() +
+  scale_y_reordered() +
+  facet_wrap(~ dimension, scales = "free_y")  
+```
+
+Which of these dimensions (after taste, aroma etc.) might associate with altitude, and which may not?
+
+```{r}
+
+# Do the individual aroma, sweetness etc. add up to the
+# total_cup_points
+coffee_metrics2 <- coffee %>% 
+  filter(total_cup_points > 0) %>% 
+  mutate(coffee_id = row_number()) %>% 
+  select(coffee_id, total_cup_points, 
+         variety, altitude_mean_meters,
+         company, country_of_origin, 
+         aroma:moisture, altitude) %>%
+  # pivot the cols aroma:moisture
+  # make the new col name = "metric"
+  # the value goes in "Value" aroma 8.67, flavor = 8.83 etc.
+  # we see that moisture does not seem to be in the total, 
+  # so sum to cupper_points
+  pivot_longer(aroma:cupper_points,
+               names_to = "metric",
+               values_to = "value") # %>% 
+  # group by the id, and the total_cup_points to check assumption
+  # that adding aroma:cupper_points scores gives the total_cup_points
+  # group_by(coffee_id, total_cup_points) %>% 
+  # summarise(total = sum(value))  %>% 
+  # # these line up well
+  # ggplot(aes(total_cup_points, total)) +
+  # geom_point()
+```
+
+If we look at a histogram of the altitude we see some outliers. These may be parsing errors since coffee is not brewed 200000 meters above sea level. [Mt Everest](https://oceanservice.noaa.gov/facts/highestpoint.html#:~:text=Mount%20Everest's%20peak%20is%20the,on%20Earth%20from%20Earth's%20center.) is 8,848 meters above mean sea level.
+
+```{r}
+coffee_metrics2 %>% 
+  ggplot(aes(altitude_mean_meters)) +
+  geom_histogram()
+```
+
+Let's filter those mean altitudes below 10000. We still see there are a few outliers (long tail), with the beginning looking more normal (around 1000 meters).
+
+```{r}
+coffee_metrics2 %>% 
+  filter(altitude_mean_meters < 10000) %>% 
+  ggplot(aes(altitude_mean_meters)) +
+  geom_histogram()
+```
+
+```{r}
+coffee %>% 
+  filter(altitude_mean_meters >= 2000) %>% 
+  select(altitude_mean_meters, altitude, country_of_origin) %T>% 
+  View()
+```
+We might be interested in the correlation between altitude and quality.
+
+```{r}
+# Let's look at original coffee ds
+coffee %>% 
+  filter(altitude_mean_meters < 10000) %>% 
+  # Cheat and make anything higher than 3000 stop at 3000
+  mutate(altitude_mean_meters = 
+           pmin(altitude_mean_meters, 3000)) %>% 
+  ggplot(aes(altitude_mean_meters, total_cup_points)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+```
+
+There is a correlation, but it is a low $R^2$, i.e. the amount of variation in the `total cup points` that is explained by altitude is low. However it does look like higher altitudes have slightly higher cup points. So now what is the amount of correlation within each of those sources (e.g. aroma, body etc.).
+
+```{r}
+coffee_metrics2 %>% 
+  filter(altitude_mean_meters < 10000,
+         altitude != 1) %>% 
+  mutate(altitude_mean_meters = pmin(altitude_mean_meters, 3000)) %>% 
+  group_by(metric) %>% 
+  summarise(correlation = cor(altitude_mean_meters, value)) %>% 
+  arrange(desc(correlation))
+```
+
+We see `sweetness` is not correlated, `acidity` has some correlation with `altitude_mean_meters`. 
+
+Let's also build a model.
+
+```{r}
+coffee_metrics2 %>% 
+  filter(altitude_mean_meters < 10000,
+         altitude != 1) %>% 
+  mutate(altitude_mean_meters = pmin(altitude_mean_meters, 3000),
+         km = altitude_mean_meters/1000 # scale in the val by making it in km
+         ) %>% 
+  group_by(metric) %>% 
+  summarise(correlation = cor(altitude_mean_meters, value),
+            # summarise a model object by creating a list with a single lm
+            # value explained by altitude_mean_meters
+            model = list(lm(value ~ km))
+            ) %>% 
+  # Now let's tidy that list column, for each model apply broom's tidy
+  # We also want the confidence interval so pass broom::tidy that you
+  # are looking for that
+  mutate(tidied = map(model, broom::tidy, conf.int = TRUE)) %>% 
+  # Now we have a statistical model for each of these value, altitude combos
+  # Slope and intercept
+  unnest(tidied) %>% 
+  # Let's keep only the slope variable and drop intercept
+  filter(term == "km") %>% 
+  ungroup() %>% 
+  mutate(metric = fct_reorder(metric, estimate)) %>% 
+  ggplot(aes(estimate, metric,
+             colour = p.value < .05)) +
+  geom_point() +
+  # Let's put some horizontal error bars showing the conf interval
+  geom_errorbarh(aes(xmin = conf.low,
+                     xmax = conf.high),
+                 height = .1) +
+  labs(x = "Each km contributes this much to the score (95% confidence int)",
+       y = "Evaluation of coffee")
+```
+
+
+
+
+
 
