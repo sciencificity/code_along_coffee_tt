@@ -495,16 +495,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsciencificitycodealongcoffeetttree9b32ab3b7159af692ba39566053b614d2a64c10ctargetblank9b32ab3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/sciencificity/code_along_coffee_tt/tree/9b32ab3b7159af692ba39566053b614d2a64c10c" target="_blank">9b32ab3</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsciencificitycodealongcoffeetttree74ffa82f3851abda8907a7cb6762fe4fd3bdf5c2targetblank74ffa82a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/sciencificity/code_along_coffee_tt/tree/74ffa82f3851abda8907a7cb6762fe4fd3bdf5c2" target="_blank">74ffa82</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsciencificitycodealongcoffeetttree9b32ab3b7159af692ba39566053b614d2a64c10ctargetblank9b32ab3a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsciencificitycodealongcoffeetttree74ffa82f3851abda8907a7cb6762fe4fd3bdf5c2targetblank74ffa82a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/sciencificity/code_along_coffee_tt/tree/9b32ab3b7159af692ba39566053b614d2a64c10c" target="_blank">9b32ab3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/sciencificity/code_along_coffee_tt/tree/74ffa82f3851abda8907a7cb6762fe4fd3bdf5c2" target="_blank">74ffa82</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -550,6 +550,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/sciencificity/code_along_coffee_tt/blob/74ffa82f3851abda8907a7cb6762fe4fd3bdf5c2/analysis/analysis.Rmd" target="_blank">74ffa82</a>
+</td>
+<td>
+sciencificity
+</td>
+<td>
+2020-07-19
+</td>
+<td>
+Added a few more plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sciencificity/code_along_coffee_tt/301dda1744121ddd53a57a04d4c299b224626fa1/docs/analysis.html" target="_blank">301dda1</a>
+</td>
+<td>
+sciencificity
+</td>
+<td>
+2020-07-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -663,8 +697,7 @@ Add start of code along analysis
 <h3>Coffee Ratings</h3>
 <pre class="r"><code>coffee &lt;- read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv&#39;) %&gt;% 
   filter(total_cup_points &gt; 0)</code></pre>
-<pre class="r"><code>coffee %T&gt;% 
-  View() %&gt;% 
+<pre class="r"><code>coffee %&gt;% 
   count(species, sort = TRUE)</code></pre>
 <pre><code># A tibble: 2 x 2
   species     n
@@ -788,8 +821,11 @@ coffee_lumped %&gt;%
   geom_boxplot()</code></pre>
 <p><img src="figure/analysis.Rmd/unnamed-chunk-2-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>coffee_lumped %&gt;% 
+  # Look at each variety and check - is it normal
+  # within that variety?
   ggplot(aes(total_cup_points, fill=variety)) +
   geom_histogram(binwidth=2) +
+  # Facet by variety, free y scale but not free x
   facet_wrap(~ variety, scale=&quot;free_y&quot;) +
   scale_fill_tq() +
   theme(legend.position = &quot;none&quot;)</code></pre>
@@ -874,12 +910,30 @@ coffee_lumped %&gt;%
   ggplot(aes(total_cup_points, country)) +
   geom_boxplot() </code></pre>
 <p><img src="figure/analysis.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Which company’s are best? Let’s look at the top few.</p>
+<pre class="r"><code>coffee %&gt;% 
+  filter(!is.na(company),
+         (total_cup_points &gt; 0)) %&gt;% 
+  mutate(company = fct_lump(company, 12),
+         company = fct_reorder(company, total_cup_points, sum)) %&gt;% 
+  filter(company != &#39;Other&#39;) %&gt;% 
+  ggplot(aes(total_cup_points, company)) +
+  geom_col() </code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coffee %&gt;% 
+  filter(!is.na(color),
+         total_cup_points &gt; 0) %&gt;% 
+  mutate(color = fct_reorder(color, total_cup_points, sum)) %&gt;% 
+  ggplot(aes(total_cup_points, color)) +
+  geom_col() </code></pre>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="interesting-dimensions" class="section level4">
 <h4>Interesting dimensions</h4>
 <pre class="r"><code># Do the individual aroma, sweetness etc. add up to the
 # total_cup_points
 coffee_metrics &lt;- coffee %&gt;% 
   filter(total_cup_points &gt; 0) %&gt;% 
+  # we don&#39;t have a unique id, so let&#39;s make one
   mutate(coffee_id = row_number()) %&gt;% 
   select(coffee_id, total_cup_points, variety,
          company, country_of_origin, 
@@ -904,7 +958,7 @@ coffee_metrics %&gt;%
   mutate(metric = fct_reorder(metric, value)) %&gt;% 
   ggplot(aes(value, metric)) +
   geom_density_ridges()</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>coffee_metrics %&gt;% 
   group_by(metric) %&gt;% 
   summarise(avg = mean(value),
@@ -923,24 +977,27 @@ coffee_metrics %&gt;%
  8 body           7.52 0.308
  9 cupper_points  7.51 0.427
 10 aftertaste     7.41 0.350</code></pre>
-<p>Are any metrics correlated?</p>
+<p><code>sweetness</code>, <code>clean_cup</code> and <code>uniformity</code> have high averages and also higher standard deviations (they’re a larger source of variation).</p>
+</div>
+<div id="are-any-metrics-correlated" class="section level4">
+<h4>Are any metrics correlated?</h4>
 <pre class="r"><code>library(widyr)
 correlations &lt;- coffee_metrics %&gt;% 
   # correlations among metrics, based on coffee_id, by value
   pairwise_cor(metric, coffee_id, value, sort = TRUE)</code></pre>
 <p>Sweetness and flavour are not correlated at all.</p>
-<p>Let’s do a network graph, can we find clusters in the metrics.</p>
+<p>Let’s do a network graph, can we find clusters in the metric?</p>
 <pre class="r"><code>library(ggraph)
 library(igraph)
 
 correlations %&gt;% 
   head(50) %&gt;% 
-  graph_from_data_frame() %&gt;% 
+  graph_from_data_frame() %&gt;% #igraph
   ggraph() +
   geom_edge_link(aes(edge_alpha = correlation)) +
   geom_node_point() +
   geom_node_text(aes(label = name), repel = TRUE)</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We see that there is one cluster with <code>aroma</code>, <code>cupper_points</code>, <code>flavor</code> etc. as one dense/tight cluster, and then further along we have the <code>sweetness</code>, <code>clean_cup</code> and <code>uniformity</code> as another cluster. These three came up in the ggridges plot, so it makes sense about these 2 clusters.</p>
 <p>The suspicion is that PCA will find similar clusters? Let’s check it out. <code>widely_svd</code> is very similar to finding correlations, the difference is it returns the metric by <code>dimension</code>. We get the first dimension, second dimension etc. (single value decomposition).</p>
 <pre class="r"><code>library(tidytext)
@@ -958,7 +1015,7 @@ coffee_metrics %&gt;%
   geom_col() +
   scale_y_reordered() +
   facet_wrap(~ dimension, scales = &quot;free_y&quot;)</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>coffee_metrics %&gt;% 
   # let&#39;s remove the one cluster of sweetness, clean_cup and uniformity
   filter(!metric %in% c(&quot;sweetness&quot;, &quot;clean_cup&quot;, &quot;uniformity&quot;)) %&gt;% 
@@ -975,7 +1032,7 @@ coffee_metrics %&gt;%
   geom_col() +
   scale_y_reordered() +
   facet_wrap(~ dimension, scales = &quot;free_y&quot;)  </code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>From the above we can maybe break down the body vs cupper_points of dimension 2, the balance vs aroma of dimension 3, the aroma vs acidity of dimension 4.</p>
 <pre class="r"><code>coffee_metrics %&gt;% 
   # let&#39;s remove the one cluster of sweetness, clean_cup and uniformity
@@ -990,7 +1047,7 @@ coffee_metrics %&gt;%
   geom_col() +
   scale_y_reordered() +
   facet_wrap(~ dimension, scales = &quot;free_y&quot;)  </code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Which of these dimensions (after taste, aroma etc.) might associate with altitude, and which may not?</p>
 <pre class="r"><code># Do the individual aroma, sweetness etc. add up to the
 # total_cup_points
@@ -1020,13 +1077,13 @@ coffee_metrics2 &lt;- coffee %&gt;%
 <pre class="r"><code>coffee_metrics2 %&gt;% 
   ggplot(aes(altitude_mean_meters)) +
   geom_histogram()</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Let’s filter those mean altitudes below 10000. We still see there are a few outliers (long tail), with the beginning looking more normal (around 1000 meters).</p>
 <pre class="r"><code>coffee_metrics2 %&gt;% 
   filter(altitude_mean_meters &lt; 10000) %&gt;% 
   ggplot(aes(altitude_mean_meters)) +
   geom_histogram()</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>coffee %&gt;% 
   filter(altitude_mean_meters &gt;= 2000) %&gt;% 
   select(altitude_mean_meters, altitude, country_of_origin) %T&gt;% 
@@ -1055,7 +1112,7 @@ coffee %&gt;%
   ggplot(aes(altitude_mean_meters, total_cup_points)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;)</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>There is a correlation, but it is a low <span class="math inline">\(R^2\)</span>, i.e. the amount of variation in the <code>total cup points</code> that is explained by altitude is low. However it does look like higher altitudes have slightly higher cup points. So now what is the amount of correlation within each of those sources (e.g. aroma, body etc.).</p>
 <pre class="r"><code>coffee_metrics2 %&gt;% 
   filter(altitude_mean_meters &lt; 10000,
@@ -1111,7 +1168,7 @@ coffee %&gt;%
                  height = .1) +
   labs(x = &quot;Each km contributes this much to the score (95% confidence int)&quot;,
        y = &quot;Evaluation of coffee&quot;)</code></pre>
-<p><img src="figure/analysis.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/analysis.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
