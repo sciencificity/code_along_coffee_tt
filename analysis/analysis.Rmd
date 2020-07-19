@@ -25,8 +25,7 @@ coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesda
 
 ```
 ```{r}
-coffee %T>% 
-  View() %>% 
+coffee %>% 
   count(species, sort = TRUE)
 
 coffee %>% 
@@ -75,8 +74,11 @@ coffee_lumped %>%
   geom_boxplot()
 
 coffee_lumped %>% 
+  # Look at each variety and check - is it normal
+  # within that variety?
   ggplot(aes(total_cup_points, fill=variety)) +
   geom_histogram(binwidth=2) +
+  # Facet by variety, free y scale but not free x
   facet_wrap(~ variety, scale="free_y") +
   scale_fill_tq() +
   theme(legend.position = "none")
@@ -118,6 +120,28 @@ coffee %>%
   geom_boxplot() 
 ```
 
+Which company's are best? Let's look at the top few.
+```{r}
+coffee %>% 
+  filter(!is.na(company),
+         (total_cup_points > 0)) %>% 
+  mutate(company = fct_lump(company, 12),
+         company = fct_reorder(company, total_cup_points, sum)) %>% 
+  filter(company != 'Other') %>% 
+  ggplot(aes(total_cup_points, company)) +
+  geom_col() 
+```
+
+```{r}
+coffee %>% 
+  filter(!is.na(color),
+         total_cup_points > 0) %>% 
+  mutate(color = fct_reorder(color, total_cup_points, sum)) %>% 
+  ggplot(aes(total_cup_points, color)) +
+  geom_col() 
+```
+
+
 #### Interesting dimensions
 
 ```{r}
@@ -125,6 +149,7 @@ coffee %>%
 # total_cup_points
 coffee_metrics <- coffee %>% 
   filter(total_cup_points > 0) %>% 
+  # we don't have a unique id, so let's make one
   mutate(coffee_id = row_number()) %>% 
   select(coffee_id, total_cup_points, variety,
          company, country_of_origin, 
@@ -161,7 +186,9 @@ coffee_metrics %>%
   arrange(desc(avg))
 ```
 
-Are any metrics correlated?
+`sweetness`, `clean_cup` and `uniformity` have high averages and also higher standard deviations (they're a larger source of variation).
+
+#### Are any metrics correlated?
 
 ```{r}
 library(widyr)
@@ -171,7 +198,7 @@ correlations <- coffee_metrics %>%
 ```
 Sweetness and flavour are not correlated at all.
 
-Let's do a network graph, can we find clusters in the metrics.
+Let's do a network graph, can we find clusters in the metric?
 
 ```{r}
 library(ggraph)
@@ -179,7 +206,7 @@ library(igraph)
 
 correlations %>% 
   head(50) %>% 
-  graph_from_data_frame() %>% 
+  graph_from_data_frame() %>% #igraph
   ggraph() +
   geom_edge_link(aes(edge_alpha = correlation)) +
   geom_node_point() +
